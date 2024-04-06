@@ -17,6 +17,7 @@ public class Agenda {
     private Long id;
     @OneToOne(mappedBy = "agenda")
     private Barbeiro barbeiro;
+    @Embedded
     @OneToMany(mappedBy = "agenda")
     private List<Atendimento> atendimentos;
 }

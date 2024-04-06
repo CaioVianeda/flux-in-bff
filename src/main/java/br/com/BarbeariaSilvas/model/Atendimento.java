@@ -1,12 +1,13 @@
 package br.com.BarbeariaSilvas.model;
 
-import br.com.BarbeariaSilvas.model.Barbeiro;
-import br.com.BarbeariaSilvas.model.Cliente;
+import br.com.BarbeariaSilvas.dto.CadastroAtendimentoDTO;
+import br.com.BarbeariaSilvas.repository.ClienteRepository;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -21,5 +22,15 @@ public class Atendimento {
     private Cliente cliente;
     @ManyToOne
     private Agenda agenda;
+    @Embedded
+    @OneToMany
+    private List<Procedimento> procedimentos;
     private LocalDateTime data;
+
+    public Atendimento(Cliente cliente, Agenda agenda, List<Procedimento> procedimentos, LocalDateTime data) {
+        this.cliente = cliente;
+        this.agenda = agenda;
+        this.procedimentos = procedimentos;
+        this.data = data;
+    }
 }
