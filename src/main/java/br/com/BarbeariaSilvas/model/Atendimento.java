@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor
 @Getter
@@ -18,16 +19,15 @@ public class Atendimento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
+    @ManyToOne
     private Cliente cliente;
     @ManyToOne
     private Agenda agenda;
-    @Embedded
-    @OneToMany
-    private List<Procedimento> procedimentos;
+    @ManyToMany
+    private Set<Procedimento> procedimentos;
     private LocalDateTime data;
 
-    public Atendimento(Cliente cliente, Agenda agenda, List<Procedimento> procedimentos, LocalDateTime data) {
+    public Atendimento(Cliente cliente, Agenda agenda, Set<Procedimento> procedimentos, LocalDateTime data) {
         this.cliente = cliente;
         this.agenda = agenda;
         this.procedimentos = procedimentos;

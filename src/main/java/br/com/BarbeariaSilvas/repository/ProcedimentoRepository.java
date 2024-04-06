@@ -4,7 +4,8 @@ import br.com.BarbeariaSilvas.model.Procedimento;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ProcedimentoRepository extends JpaRepository<Procedimento,Long> {
-    List<Procedimento> findByIdIn(List<Integer> ids);
+    Set<Procedimento> findByIdIn(List<Integer> ids);
 }

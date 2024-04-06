@@ -17,6 +17,9 @@ public class Procedimento {
         private Long id;
         private String nome;
         private BigDecimal preco;
+        @ManyToOne
+        private Atendimento atendimento;
+
 
         public Procedimento(CadastroProcedimentoDTO dto){
                 this.nome = dto.nome();
