@@ -1,5 +1,6 @@
 package br.com.BarbeariaSilvas.model;
 
+import br.com.BarbeariaSilvas.dto.CadastroBarbeiroDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,4 +19,11 @@ public class Barbeiro {
     @OneToOne
     private Agenda agenda;
     private String email;
+
+    public Barbeiro(CadastroBarbeiroDTO dto, Agenda agenda){
+        this.nome = dto.nome();
+        this.telefone = dto.telefone();
+        this.agenda = agenda;
+        this.email = dto.email();
+    }
 }
