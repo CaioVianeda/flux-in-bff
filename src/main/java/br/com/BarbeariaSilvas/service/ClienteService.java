@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ClienteService {
 
@@ -21,4 +24,8 @@ public class ClienteService {
         return new DadosClienteDTO(cliente);
     }
 
+    public List<DadosClienteDTO> listarClientes() {
+        var clientes = clienteRepository.findAll();
+        return clientes.stream().map(DadosClienteDTO::new).collect(Collectors.toList());
+    }
 }

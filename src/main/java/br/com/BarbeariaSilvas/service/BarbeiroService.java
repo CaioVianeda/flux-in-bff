@@ -10,10 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class BarbeiroService {
     @Autowired
-    BarbeiroRespository barbeiroRespository;
+    BarbeiroRespository barbeiroRepository;
     @Autowired
     AgendaRepository agendaRepository;
 
@@ -22,7 +25,13 @@ public class BarbeiroService {
         Agenda agenda = new Agenda();
         agendaRepository.save(agenda);
         Barbeiro barbeiro = new Barbeiro(dto,agenda);
-        barbeiroRespository.save(barbeiro);
+        barbeiroRepository.save(barbeiro);
         return new DadosBarbeiroDTO(barbeiro);
+
+    }
+
+    public List<DadosBarbeiroDTO> listarBarbeiros() {
+        var barbeiros = barbeiroRepository.findAll();
+        return barbeiros.stream().map(DadosBarbeiroDTO::new).collect(Collectors.toList());
     }
 }
