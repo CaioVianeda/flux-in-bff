@@ -31,4 +31,10 @@ public class ClienteController {
         return ResponseEntity.ok(clientes);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity apagarCliente(@PathVariable("id") Long id){
+        service.apagarCliente(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

@@ -34,4 +34,9 @@ public class BarbeiroService {
         var barbeiros = barbeiroRepository.findAll();
         return barbeiros.stream().map(DadosBarbeiroDTO::new).collect(Collectors.toList());
     }
+
+    @Transactional
+    public void apagarBarbeiro(Long id) {
+        barbeiroRepository.deleteById(id);
+    }
 }

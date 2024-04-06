@@ -30,4 +30,10 @@ public class BarbeiroController {
         return ResponseEntity.ok(barbeiros);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity apagarBarbeiro(@PathVariable("id") Long id){
+        service.apagarBarbeiro(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

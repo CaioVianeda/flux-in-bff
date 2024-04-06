@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class AtendimentoService {
 
@@ -41,4 +44,12 @@ public class AtendimentoService {
         return new DadosAtendimentoDTO(atendimento);
     }
 
+    public List<DadosAtendimentoDTO> listarAtendimentos() {
+        return atendimentoRepository.findAll().stream().map(DadosAtendimentoDTO::new).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void apagarAtendimento(Long id) {
+        atendimentoRepository.deleteById(id);
+    }
 }

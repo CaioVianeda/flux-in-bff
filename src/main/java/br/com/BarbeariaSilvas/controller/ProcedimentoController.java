@@ -6,10 +6,7 @@ import br.com.BarbeariaSilvas.service.ProcedimentoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
@@ -23,5 +20,11 @@ public class ProcedimentoController {
     public ResponseEntity cadastrarProcedimento(@RequestBody @Valid CadastroProcedimentoDTO dto, UriComponentsBuilder uriBuilder) {
         var procedimento = service.cadastrarProcedimento(dto);
         return ResponseEntity.ok().body(procedimento);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity apagarProcedimento(@PathVariable("id") Long id){
+        service.apagarProcedimento(id);
+        return ResponseEntity.noContent().build();
     }
 }

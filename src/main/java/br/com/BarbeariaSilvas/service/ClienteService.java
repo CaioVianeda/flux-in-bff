@@ -6,6 +6,7 @@ import br.com.BarbeariaSilvas.model.Cliente;
 import br.com.BarbeariaSilvas.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
@@ -27,5 +28,10 @@ public class ClienteService {
     public List<DadosClienteDTO> listarClientes() {
         var clientes = clienteRepository.findAll();
         return clientes.stream().map(DadosClienteDTO::new).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void apagarCliente(Long id) {
+        clienteRepository.deleteById(id);
     }
 }
