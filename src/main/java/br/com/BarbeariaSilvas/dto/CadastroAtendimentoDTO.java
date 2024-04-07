@@ -4,14 +4,14 @@ import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 public record CadastroAtendimentoDTO(@NotNull
                                   Long clienteId,
                                      @NotNull
                                   Long agendaId,
                                      @NotNull
-                                  List<Integer> procedimentosId,
+                                     Set<Long> procedimentosId,
                                      @Future
                                   LocalDateTime data) {
 }

@@ -10,7 +10,7 @@ public record CadastroBarbeiroDTO(
         @NotBlank
         String nome,
         @NotBlank
-        @Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}")
+        @Pattern(regexp = "^\\(?\\d{2}\\)?[\\s-]?\\d{4,5}-?\\d{4}$")
         String telefone,
         @NotBlank
         @Email

@@ -7,5 +7,5 @@ import java.util.List;
 import java.util.Set;
 
 public interface ProcedimentoRepository extends JpaRepository<Procedimento,Long> {
-    Set<Procedimento> findByIdIn(List<Integer> ids);
+    Set<Procedimento> findByIdIn(Set<Long> ids);
 }
