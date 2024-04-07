@@ -6,6 +6,7 @@ import br.com.BarbeariaSilvas.model.Agenda;
 import br.com.BarbeariaSilvas.model.Barbeiro;
 import br.com.BarbeariaSilvas.repository.AgendaRepository;
 import br.com.BarbeariaSilvas.repository.BarbeiroRespository;
+import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,5 +39,15 @@ public class BarbeiroService {
     @Transactional
     public void apagarBarbeiro(Long id) {
         barbeiroRepository.deleteById(id);
+    }
+
+    public DadosBarbeiroDTO atualizarDadosBarbeiro(Long id, CadastroBarbeiroDTO dto) {
+        var barbeiro = barbeiroRepository.findById(id);
+        if(barbeiro.isPresent()){
+            barbeiro.get().atualizarBarbeiro(dto);
+            barbeiroRepository.save(barbeiro.get());
+            return new DadosBarbeiroDTO(barbeiro.get());
+        }
+        else throw new ValidationException("Não existe barbeiro com ID : " + id + "!");
     }
 }

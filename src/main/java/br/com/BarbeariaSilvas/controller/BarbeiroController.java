@@ -30,6 +30,12 @@ public class BarbeiroController {
         return ResponseEntity.ok(barbeiros);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity atualizarDadosBarbeiro(@PathVariable("id") Long id, @RequestBody CadastroBarbeiroDTO dto){
+        DadosBarbeiroDTO barbeiro = service.atualizarDadosBarbeiro(id, dto);
+        return ResponseEntity.ok(barbeiro);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity apagarBarbeiro(@PathVariable("id") Long id){
         service.apagarBarbeiro(id);

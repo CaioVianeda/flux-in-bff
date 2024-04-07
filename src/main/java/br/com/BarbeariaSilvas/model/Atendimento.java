@@ -35,21 +35,4 @@ public class Atendimento {
         this.procedimentos = procedimentos;
         this.data = data;
     }
-
-    public void alterarAtendimento(Cliente cliente, Agenda agenda, Set<Procedimento> procedimentos, LocalDateTime data) {
-
-        if (cliente != this.cliente) {
-            this.cliente = cliente;
-        }
-        if (agenda != this.agenda) {
-            this.agenda = agenda;
-        }
-        if (procedimentos != this.procedimentos) {
-            this.procedimentos = procedimentos;
-        }
-        if (data != this.data) {
-            this.data = data;
-        }
-    }
-
 }

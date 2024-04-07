@@ -26,4 +26,10 @@ public class Barbeiro {
         this.agenda = agenda;
         this.email = dto.email();
     }
+
+    public void atualizarBarbeiro(CadastroBarbeiroDTO dto){
+        this.nome = dto.nome();
+        this.telefone = dto.telefone();
+        this.email = dto.email();
+    }
 }
