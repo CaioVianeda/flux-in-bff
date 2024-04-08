@@ -20,4 +20,9 @@ public class Cliente {
         this.nome = dto.nome();
         this.telefone = dto.telefone();
     }
+
+    public void atualizarCliente(CadastroClienteDTO dto){
+        this.nome = dto.nome();
+        this.telefone = dto.telefone();
+    }
 }

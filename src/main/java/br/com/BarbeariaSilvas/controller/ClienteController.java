@@ -31,6 +31,12 @@ public class ClienteController {
         return ResponseEntity.ok(clientes);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity atualizarDadosCliente(@PathVariable("id") Long id, @RequestBody CadastroClienteDTO dto){
+        DadosClienteDTO cliente = service.atualizarDadosCliente(id, dto) ;
+        return ResponseEntity.ok(cliente);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity apagarCliente(@PathVariable("id") Long id){
         service.apagarCliente(id);

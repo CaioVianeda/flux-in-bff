@@ -41,6 +41,7 @@ public class BarbeiroService {
         barbeiroRepository.deleteById(id);
     }
 
+    @Transactional
     public DadosBarbeiroDTO atualizarDadosBarbeiro(Long id, CadastroBarbeiroDTO dto) {
         var barbeiro = barbeiroRepository.findById(id);
         if(barbeiro.isPresent()){
