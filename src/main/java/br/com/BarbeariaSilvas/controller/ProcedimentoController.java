@@ -24,13 +24,19 @@ public class ProcedimentoController {
     }
 
     @GetMapping
-public ResponseEntity<Set<CadastroProcedimentoDTO>> listarProcedimentos(){
-         Set<CadastroProcedimentoDTO> procedimentos = service.listarProcedimentos();
-         return ResponseEntity.ok(procedimentos);
+    public ResponseEntity<Set<CadastroProcedimentoDTO>> listarProcedimentos() {
+        Set<CadastroProcedimentoDTO> procedimentos = service.listarProcedimentos();
+        return ResponseEntity.ok(procedimentos);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity atualizarDadosProcedimento(@PathVariable("id") Long id, @RequestBody CadastroProcedimentoDTO dto){
+        CadastroProcedimentoDTO procedimento = service.atualizarProcedimento(id,dto);
+        return ResponseEntity.ok(procedimento);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity apagarProcedimento(@PathVariable("id") Long id){
+    public ResponseEntity apagarProcedimento(@PathVariable("id") Long id) {
         service.apagarProcedimento(id);
         return ResponseEntity.noContent().build();
     }

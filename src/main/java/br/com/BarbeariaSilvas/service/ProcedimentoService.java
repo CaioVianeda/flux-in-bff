@@ -3,6 +3,7 @@ package br.com.BarbeariaSilvas.service;
 import br.com.BarbeariaSilvas.dto.CadastroProcedimentoDTO;
 import br.com.BarbeariaSilvas.model.Procedimento;
 import br.com.BarbeariaSilvas.repository.ProcedimentoRepository;
+import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,8 +30,16 @@ public class ProcedimentoService {
     }
 
     @Transactional
+    public CadastroProcedimentoDTO atualizarProcedimento(Long id, CadastroProcedimentoDTO dto) {
+        var procedimento = repository.findById(id);
+        if (procedimento.isPresent()) {
+            procedimento.get().atualizarProcedimento(dto);
+            return new CadastroProcedimentoDTO(procedimento.get());
+        } else throw new ValidationException("Não existe procedimento com ID : " + id + "!");
+    }
+
+    @Transactional
     public void apagarProcedimento(Long id) {
         repository.deleteById(id);
     }
-
 }

@@ -12,17 +12,22 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "procedimentos")
 public class Procedimento {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
-        private String nome;
-        private BigDecimal preco;
-        @ManyToOne
-        private Atendimento atendimento;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String nome;
+    private BigDecimal preco;
+    @ManyToOne
+    private Atendimento atendimento;
 
 
-        public Procedimento(CadastroProcedimentoDTO dto){
-                this.nome = dto.nome();
-                this.preco = dto.preco();
-        }
+    public Procedimento(CadastroProcedimentoDTO dto) {
+        this.nome = dto.nome();
+        this.preco = dto.preco();
+    }
+
+    public void atualizarProcedimento(CadastroProcedimentoDTO dto) {
+        this.nome = dto.nome();
+        this.preco = dto.preco();
+    }
 }
