@@ -11,7 +11,8 @@ public interface AtendimentoRepository extends JpaRepository<Atendimento, Long> 
     @Query("SELECT COUNT(a) FROM Atendimento a " +
             "WHERE a.agenda.id = :agendaId " +
             "AND a.data BETWEEN :inicioPeriodo AND :fimPeriodo")
-    int countAtendimentosByAgendaAndPeriodo(Long agendaId,
+    int contaAtendimentosPorAgendaEPeriodo(Long agendaId,
                                             LocalDateTime inicioPeriodo,
                                             LocalDateTime fimPeriodo);
+
 }

@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
+import java.time.LocalTime;
+
 public record CadastroBarbeiroDTO(
         @NotBlank
         String nome,
@@ -14,5 +16,7 @@ public record CadastroBarbeiroDTO(
         String telefone,
         @NotBlank
         @Email
-        String email) {
+        String email,
+        LocalTime inicioExpediente,
+        LocalTime terminoExpediente) {
 }

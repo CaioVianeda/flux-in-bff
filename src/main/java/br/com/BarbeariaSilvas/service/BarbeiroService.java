@@ -45,7 +45,7 @@ public class BarbeiroService {
     public DadosBarbeiroDTO atualizarDadosBarbeiro(Long id, CadastroBarbeiroDTO dto) {
         var barbeiro = barbeiroRepository.findById(id);
         if(barbeiro.isPresent()){
-            barbeiro.get().atualizarBarbeiro(dto);
+            barbeiro.get().atualizarDados(dto);
             barbeiroRepository.save(barbeiro.get());
             return new DadosBarbeiroDTO(barbeiro.get());
         }
