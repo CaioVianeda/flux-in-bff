@@ -33,8 +33,8 @@ public class AtendimentoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity atualizarAtendimento(@PathVariable("id") Long id, @RequestBody @Valid CadastroAtendimentoDTO dto){
-        DadosAtendimentoDTO atendimento = service.atualizarAtendimento(id, dto);
+    public ResponseEntity atualizarDadosAtendimento(@PathVariable("id") Long id, @RequestBody @Valid CadastroAtendimentoDTO dto){
+        DadosAtendimentoDTO atendimento = service.atualizarDadosAtendimento(id, dto);
         return ResponseEntity.ok(atendimento);
     }
 

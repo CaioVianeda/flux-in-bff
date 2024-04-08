@@ -53,7 +53,7 @@ public class AtendimentoService {
     }
 
     @Transactional
-    public DadosAtendimentoDTO atualizarAtendimento(Long id, CadastroAtendimentoDTO dto) {
+    public DadosAtendimentoDTO atualizarDadosAtendimento(Long id, CadastroAtendimentoDTO dto) {
         var atendimento = atendimentoRepository.findById(id);
         if (atendimento.isPresent()) {
             atendimento.get().setData(null);
