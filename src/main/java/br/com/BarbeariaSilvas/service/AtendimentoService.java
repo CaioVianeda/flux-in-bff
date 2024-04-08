@@ -8,6 +8,7 @@ import br.com.BarbeariaSilvas.repository.AgendaRepository;
 import br.com.BarbeariaSilvas.repository.AtendimentoRepository;
 import br.com.BarbeariaSilvas.repository.ClienteRepository;
 import br.com.BarbeariaSilvas.repository.ProcedimentoRepository;
+import br.com.BarbeariaSilvas.validations.atendimento.ValidacaoAtendimento;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,8 +33,14 @@ public class AtendimentoService {
     @Autowired
     private AgendaRepository agendaRepository;
 
+    @Autowired
+    private List<ValidacaoAtendimento>  validacoes;
+
     @Transactional
     public DadosAtendimentoDTO agendarAtendimento(CadastroAtendimentoDTO dto) {
+        validacoes.forEach( v->{
+            v.validar(dto);
+        });
         var cliente = clienteRepository.findById(dto.clienteId());
         var agenda = agendaRepository.findById(dto.agendaId());
         var procedimentos = procedimentoRepository.findByIdIn(dto.procedimentosId());

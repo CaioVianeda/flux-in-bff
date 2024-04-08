@@ -7,11 +7,11 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 public record CadastroAtendimentoDTO(@NotNull
-                                  Long clienteId,
+                                     Long clienteId,
                                      @NotNull
-                                  Long agendaId,
+                                     Long agendaId,
                                      @NotNull
                                      Set<Long> procedimentosId,
                                      @Future
-                                  LocalDateTime data) {
+                                     LocalDateTime data) {
 }
