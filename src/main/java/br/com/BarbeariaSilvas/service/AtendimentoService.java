@@ -28,7 +28,7 @@ public class AtendimentoService {
     private ClienteRepository clienteRepository;
 
     @Autowired
-    ProcedimentoRepository procedimentoRepository;
+    private ProcedimentoRepository procedimentoRepository;
 
     @Autowired
     private AgendaRepository agendaRepository;
