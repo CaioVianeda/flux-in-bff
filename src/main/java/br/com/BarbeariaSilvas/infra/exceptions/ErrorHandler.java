@@ -1,6 +1,7 @@
 package br.com.BarbeariaSilvas.infra.exceptions;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -28,6 +29,10 @@ public class ErrorHandler {
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity handleValidationException(Exception ex) {
+        return ResponseEntity.badRequest().body("Erro: " + ex.getLocalizedMessage());
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity handleError500(Exception ex) {

@@ -21,10 +21,10 @@ public class ValidacaoIdsExistentes implements ValidacaoAtendimento {
     private AgendaRepository agendaRepository;
 
     public void validar(CadastroAtendimentoDTO dto) {
-        if (dto.clienteId() != null && clienteRepository.existsById(dto.clienteId())) {
+        if (dto.clienteId() != null && !clienteRepository.existsById(dto.clienteId())) {
             throw new ValidationException("Não existe cliente com ID : " + dto.clienteId() + "!");
         }
-        if (agendaRepository.existsById(dto.agendaId())) {
+        if (!agendaRepository.existsById(dto.agendaId())) {
             throw new ValidationException("Não existe agenda com ID : " + dto.agendaId() + "!");
         }
         dto.procedimentosId().forEach(id -> {

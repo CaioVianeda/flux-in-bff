@@ -34,13 +34,11 @@ public class AtendimentoService {
     private AgendaRepository agendaRepository;
 
     @Autowired
-    private List<ValidacaoAtendimento>  validacoes;
+    private List<ValidacaoAtendimento> validacoes;
 
     @Transactional
     public DadosAtendimentoDTO agendarAtendimento(CadastroAtendimentoDTO dto) {
-        validacoes.forEach( v->{
-            v.validar(dto);
-        });
+        validacoes.forEach(v -> v.validar(dto));
         var cliente = clienteRepository.findById(dto.clienteId());
         var agenda = agendaRepository.findById(dto.agendaId());
         var procedimentos = procedimentoRepository.findByIdIn(dto.procedimentosId());
@@ -58,6 +56,8 @@ public class AtendimentoService {
     public DadosAtendimentoDTO atualizarAtendimento(Long id, CadastroAtendimentoDTO dto) {
         var atendimento = atendimentoRepository.findById(id);
         if (atendimento.isPresent()) {
+            atendimento.get().setData(null);
+            validacoes.forEach(v -> v.validar(dto));
             if (!Objects.equals(dto.clienteId(), atendimento.get().getCliente().getId())) {
                 var cliente = clienteRepository.findById(dto.clienteId());
                 atendimento.get().setCliente(cliente.get());
