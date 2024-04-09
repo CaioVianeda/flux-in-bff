@@ -22,10 +22,10 @@ public class BarbeiroService {
     AgendaRepository agendaRepository;
 
     @Transactional
-    public DadosBarbeiroDTO cadastrarBarbeiro(CadastroBarbeiroDTO dto){
+    public DadosBarbeiroDTO cadastrarBarbeiro(CadastroBarbeiroDTO dto) {
         Agenda agenda = new Agenda();
         agendaRepository.save(agenda);
-        Barbeiro barbeiro = new Barbeiro(dto,agenda);
+        Barbeiro barbeiro = new Barbeiro(dto, agenda);
         barbeiroRepository.save(barbeiro);
         return new DadosBarbeiroDTO(barbeiro);
 
@@ -36,6 +36,12 @@ public class BarbeiroService {
         return barbeiros.stream().map(DadosBarbeiroDTO::new).collect(Collectors.toList());
     }
 
+    public DadosBarbeiroDTO listarBarbeiroPorId(Long id) {
+        if (barbeiroRepository.existsById(id)) {
+            return new DadosBarbeiroDTO(barbeiroRepository.getReferenceById(id));
+        } else throw new ValidationException("Não existe barbeiro com ID : " + id + "!");
+    }
+
     @Transactional
     public void apagarBarbeiro(Long id) {
         barbeiroRepository.deleteById(id);
@@ -44,11 +50,10 @@ public class BarbeiroService {
     @Transactional
     public DadosBarbeiroDTO atualizarDadosBarbeiro(Long id, CadastroBarbeiroDTO dto) {
         var barbeiro = barbeiroRepository.findById(id);
-        if(barbeiro.isPresent()){
+        if (barbeiro.isPresent()) {
             barbeiro.get().atualizarDados(dto);
             barbeiroRepository.save(barbeiro.get());
             return new DadosBarbeiroDTO(barbeiro.get());
-        }
-        else throw new ValidationException("Não existe barbeiro com ID : " + id + "!");
+        } else throw new ValidationException("Não existe barbeiro com ID : " + id + "!");
     }
 }

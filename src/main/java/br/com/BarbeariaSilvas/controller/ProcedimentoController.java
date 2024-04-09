@@ -1,6 +1,7 @@
 package br.com.BarbeariaSilvas.controller;
 
 import br.com.BarbeariaSilvas.dto.CadastroProcedimentoDTO;
+import br.com.BarbeariaSilvas.dto.DadosProcedimentoDTO;
 import br.com.BarbeariaSilvas.service.ProcedimentoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +25,20 @@ public class ProcedimentoController {
     }
 
     @GetMapping
-    public ResponseEntity<Set<CadastroProcedimentoDTO>> listarProcedimentos() {
-        Set<CadastroProcedimentoDTO> procedimentos = service.listarProcedimentos();
+    public ResponseEntity<Set<DadosProcedimentoDTO>> listarProcedimentos() {
+        Set<DadosProcedimentoDTO> procedimentos = service.listarProcedimentos();
         return ResponseEntity.ok(procedimentos);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity listarProcedimentoPorId(@PathVariable("id") Long id) {
+        DadosProcedimentoDTO procedimento = service.listarProcedimentoPorId(id);
+        return ResponseEntity.ok(procedimento);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity atualizarDadosProcedimento(@PathVariable("id") Long id, @RequestBody CadastroProcedimentoDTO dto){
-        CadastroProcedimentoDTO procedimento = service.atualizarProcedimento(id,dto);
+        DadosProcedimentoDTO procedimento = service.atualizarProcedimento(id,dto);
         return ResponseEntity.ok(procedimento);
     }
 

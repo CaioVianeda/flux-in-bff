@@ -1,6 +1,7 @@
 package br.com.BarbeariaSilvas.service;
 
 import br.com.BarbeariaSilvas.dto.CadastroProcedimentoDTO;
+import br.com.BarbeariaSilvas.dto.DadosProcedimentoDTO;
 import br.com.BarbeariaSilvas.model.Procedimento;
 import br.com.BarbeariaSilvas.repository.ProcedimentoRepository;
 import jakarta.validation.ValidationException;
@@ -18,23 +19,29 @@ public class ProcedimentoService {
     ProcedimentoRepository repository;
 
     @Transactional
-    public CadastroProcedimentoDTO cadastrarProcedimento(CadastroProcedimentoDTO dto) {
+    public DadosProcedimentoDTO cadastrarProcedimento(CadastroProcedimentoDTO dto) {
         var procedimento = new Procedimento(dto);
         repository.save(procedimento);
-        return dto;
+        return new DadosProcedimentoDTO(procedimento);
     }
 
 
-    public Set<CadastroProcedimentoDTO> listarProcedimentos() {
-        return repository.findAll().stream().map(CadastroProcedimentoDTO::new).collect(Collectors.toSet());
+    public Set<DadosProcedimentoDTO> listarProcedimentos() {
+        return repository.findAll().stream().map(DadosProcedimentoDTO::new).collect(Collectors.toSet());
+    }
+
+    public DadosProcedimentoDTO listarProcedimentoPorId(Long id) {
+        if (repository.existsById(id)){
+            return new DadosProcedimentoDTO(repository.getReferenceById(id));
+        } else throw new ValidationException("Não existe procedimento com ID : " + id + "!");
     }
 
     @Transactional
-    public CadastroProcedimentoDTO atualizarProcedimento(Long id, CadastroProcedimentoDTO dto) {
+    public DadosProcedimentoDTO atualizarProcedimento(Long id, CadastroProcedimentoDTO dto) {
         var procedimento = repository.findById(id);
         if (procedimento.isPresent()) {
             procedimento.get().atualizarProcedimento(dto);
-            return new CadastroProcedimentoDTO(procedimento.get());
+            return new DadosProcedimentoDTO(procedimento.get());
         } else throw new ValidationException("Não existe procedimento com ID : " + id + "!");
     }
 

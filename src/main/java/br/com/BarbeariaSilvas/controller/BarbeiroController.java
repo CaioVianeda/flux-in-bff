@@ -25,19 +25,26 @@ public class BarbeiroController {
     }
 
     @GetMapping
-    public ResponseEntity<List<DadosBarbeiroDTO>> listarBarbeiros(){
+    public ResponseEntity<List<DadosBarbeiroDTO>> listarBarbeiros() {
         var barbeiros = service.listarBarbeiros();
         return ResponseEntity.ok(barbeiros);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity listarBarbeiroPorId(@PathVariable("id") Long id) {
+        DadosBarbeiroDTO barbeiros = service.listarBarbeiroPorId(id);
+        return ResponseEntity.ok(barbeiros);
+    }
+
+
     @PutMapping("/{id}")
-    public ResponseEntity atualizarDadosBarbeiro(@PathVariable("id") Long id, @RequestBody CadastroBarbeiroDTO dto){
+    public ResponseEntity atualizarDadosBarbeiro(@PathVariable("id") Long id, @RequestBody CadastroBarbeiroDTO dto) {
         DadosBarbeiroDTO barbeiro = service.atualizarDadosBarbeiro(id, dto);
         return ResponseEntity.ok(barbeiro);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity apagarBarbeiro(@PathVariable("id") Long id){
+    public ResponseEntity apagarBarbeiro(@PathVariable("id") Long id) {
         service.apagarBarbeiro(id);
         return ResponseEntity.noContent().build();
     }

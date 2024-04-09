@@ -52,6 +52,12 @@ public class AtendimentoService {
         return atendimentoRepository.findAll().stream().map(DadosAtendimentoDTO::new).collect(Collectors.toList());
     }
 
+    public DadosAtendimentoDTO listarAtendimentoPorId(Long id) {
+        if (atendimentoRepository.existsById(id)) {
+            return new DadosAtendimentoDTO(atendimentoRepository.getReferenceById(id));
+        } else throw new ValidationException("Não possui atendimento com ID: " + id + "!");
+    }
+
     @Transactional
     public DadosAtendimentoDTO atualizarDadosAtendimento(Long id, CadastroAtendimentoDTO dto) {
         var atendimento = atendimentoRepository.findById(id);
@@ -84,4 +90,6 @@ public class AtendimentoService {
     public void apagarAtendimento(Long id) {
         atendimentoRepository.deleteById(id);
     }
+
+
 }

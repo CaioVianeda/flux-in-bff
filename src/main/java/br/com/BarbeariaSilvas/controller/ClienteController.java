@@ -31,6 +31,12 @@ public class ClienteController {
         return ResponseEntity.ok(clientes);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity listarClientePorId(@PathVariable("id") Long id){
+        DadosClienteDTO cliente = service.listarClientePorId(id);
+        return ResponseEntity.ok(cliente);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity atualizarDadosCliente(@PathVariable("id") Long id, @RequestBody CadastroClienteDTO dto){
         DadosClienteDTO cliente = service.atualizarDadosCliente(id, dto) ;
