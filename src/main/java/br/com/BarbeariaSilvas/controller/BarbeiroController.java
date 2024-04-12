@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -51,7 +52,7 @@ public class BarbeiroController {
     }
 
     @GetMapping("/{id}/horarios")
-    public ResponseEntity<List<LocalTime>> listarHorariosDisponiveis(@PathVariable Long id){
-        return ResponseEntity.ok(service.horariosDisponiveisParaBarbeiro(id));
+    public ResponseEntity<List<String>> listarHorariosDisponiveis(@PathVariable Long id){
+        return ResponseEntity.ok(service.horariosDisponiveisParaBarbeiro(id).stream().map(h-> h.format(DateTimeFormatter.ofPattern("HH:mm"))).toList());
     }
 }
