@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -49,4 +50,8 @@ public class BarbeiroController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{id}/horarios")
+    public ResponseEntity<List<LocalTime>> listarHorariosDisponiveis(@PathVariable Long id){
+        return ResponseEntity.ok(service.horariosDisponiveisParaBarbeiro(id));
+    }
 }

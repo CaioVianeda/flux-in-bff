@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,5 +57,19 @@ public class BarbeiroService {
             barbeiroRepository.save(barbeiro.get());
             return new DadosBarbeiroDTO(barbeiro.get());
         } else throw new ValidationException("Não existe barbeiro com ID : " + id + "!");
+    }
+
+    public List<LocalTime> horariosDisponiveisParaBarbeiro(Long id) {
+        var barbeiro = barbeiroRepository.findById(id);
+       if (barbeiro.isPresent()) {
+           List<LocalTime> horarios = new ArrayList<>();
+           LocalTime horarioAtual = barbeiro.get().getInicioExpediente();
+           while(horarioAtual.isBefore(barbeiro.get().getTerminoExpediente())){
+               horarios.add(horarioAtual);
+               horarioAtual = horarioAtual.plusMinutes(30);
+           }
+           return horarios;
+       }
+       else throw new ValidationException("Não existe barbeiro com ID : " + id + "!");
     }
 }
