@@ -5,11 +5,12 @@ import br.com.BarbeariaSilvas.dto.DadosBarbeiroDTO;
 import br.com.BarbeariaSilvas.service.BarbeiroService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.time.LocalTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class BarbeiroController {
     }
 
     @GetMapping("/{id}/horarios")
-    public ResponseEntity<List<String>> listarHorariosDisponiveis(@PathVariable Long id){
-        return ResponseEntity.ok(service.horariosDisponiveisParaBarbeiro(id).stream().map(h-> h.format(DateTimeFormatter.ofPattern("HH:mm"))).toList());
+    public ResponseEntity<List<String>> listarHorariosDisponiveisPorId(@PathVariable Long id,@RequestParam("dia") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dia){
+        return ResponseEntity.ok(service.horariosDisponiveisParaBarbeiro(id,dia).stream().map(h-> h.format(DateTimeFormatter.ofPattern("HH:mm"))).toList());
     }
 }

@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -34,6 +35,7 @@ public class Atendimento {
     private Boolean finalizado;
     @Setter
     private LocalDateTime data;
+    private LocalTime duracao;
 
     public Atendimento(Cliente cliente, Agenda agenda, Set<Procedimento> procedimentos, LocalDateTime data) {
         this.cliente = cliente;
@@ -42,6 +44,8 @@ public class Atendimento {
         this.finalizado = data.isBefore(LocalDateTime.now());
         procedimentos.forEach(p -> registroValorProcedimentos.add(p.getPreco()));
         this.data = data;
+        this.duracao = LocalTime.of(0,0);
+        procedimentos.forEach(p -> this.duracao = this.duracao.plusMinutes(p.getTempoDuracao().getMinute()));
     }
 
     public void mudarStatusFinalizado(){this.finalizado= !finalizado;}

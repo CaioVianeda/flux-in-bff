@@ -3,14 +3,17 @@ package br.com.BarbeariaSilvas.service;
 import br.com.BarbeariaSilvas.dto.CadastroBarbeiroDTO;
 import br.com.BarbeariaSilvas.dto.DadosBarbeiroDTO;
 import br.com.BarbeariaSilvas.model.Agenda;
+import br.com.BarbeariaSilvas.model.Atendimento;
 import br.com.BarbeariaSilvas.model.Barbeiro;
 import br.com.BarbeariaSilvas.repository.AgendaRepository;
 import br.com.BarbeariaSilvas.repository.BarbeiroRespository;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -60,17 +63,41 @@ public class BarbeiroService {
         } else throw new ValidationException("Não existe barbeiro com ID : " + id + "!");
     }
 
-    public List<LocalTime> horariosDisponiveisParaBarbeiro(Long id) {
+    public List<LocalTime> horariosDisponiveisParaBarbeiro(Long id, LocalDate dia) {
         var barbeiro = barbeiroRepository.findById(id);
-       if (barbeiro.isPresent()) {
-           List<LocalTime> horarios = new ArrayList<>();
-           LocalTime horarioAtual = barbeiro.get().getInicioExpediente();
-           while(horarioAtual.isBefore(barbeiro.get().getTerminoExpediente())){
-               horarios.add(horarioAtual);
-               horarioAtual = horarioAtual.plusMinutes(30);
-           }
-           return horarios;
-       }
-       else throw new ValidationException("Não existe barbeiro com ID : " + id + "!");
+        if (barbeiro.isPresent()) {
+
+            List<LocalTime> horariosOcupados = retornaHorariosOcupados(dia,id);
+
+            List<LocalTime> horariosDisponiveis = new ArrayList<>();
+            LocalTime horarioAtual = barbeiro.get().getInicioExpediente();
+
+            while (horarioAtual.isBefore(barbeiro.get().getTerminoExpediente())) {
+                horariosDisponiveis.add(horarioAtual);
+                horarioAtual = horarioAtual.plusMinutes(30);
+            }
+            horariosDisponiveis.removeIf(horariosOcupados::contains);
+            return horariosDisponiveis;
+        } else throw new ValidationException("Não existe barbeiro com ID : " + id + "!");
+    }
+
+    public List<LocalTime> retornaHorariosOcupados(LocalDate dia, Long id){
+        List<Atendimento> atendimentosAgendados = agendaRepository.findById(id).get().getAtendimentos();
+        List<LocalTime> horariosOcupados = new ArrayList<>();
+
+        for(Atendimento a : atendimentosAgendados){
+            if(a.getData().toLocalDate().equals(dia)){
+                int duracaoTotal = a.getDuracao().getHour()*60+a.getDuracao().getMinute();
+                LocalTime horarioInicio = a.getData().toLocalTime();
+                LocalTime horarioFim = horarioInicio.plusMinutes(duracaoTotal);
+
+                while (horarioInicio.isBefore(horarioFim)) {
+                    horariosOcupados.add(horarioInicio);
+                    horarioInicio = horarioInicio.plusMinutes(1);
+                }
+            }
+        }
+        System.out.println(horariosOcupados);
+        return horariosOcupados;
     }
 }

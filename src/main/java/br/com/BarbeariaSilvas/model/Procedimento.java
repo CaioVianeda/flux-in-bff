@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalTime;
 
 @NoArgsConstructor
 @Getter
@@ -19,11 +20,12 @@ public class Procedimento {
     private BigDecimal preco;
     @ManyToOne
     private Atendimento atendimento;
-
+    private LocalTime tempoDuracao;
 
     public Procedimento(CadastroProcedimentoDTO dto) {
         this.nome = dto.nome();
         this.preco = dto.preco();
+        this.tempoDuracao = LocalTime.of(0,30);
     }
 
     public void atualizarProcedimento(CadastroProcedimentoDTO dto) {
