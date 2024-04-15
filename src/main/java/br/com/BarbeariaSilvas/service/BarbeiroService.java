@@ -67,27 +67,32 @@ public class BarbeiroService {
         var barbeiro = barbeiroRepository.findById(id);
         if (barbeiro.isPresent()) {
 
-            List<LocalTime> horariosOcupados = retornaHorariosOcupados(dia,id);
+            List<LocalTime> horariosOcupados = retornaHorariosOcupados(dia, id);
 
             List<LocalTime> horariosDisponiveis = new ArrayList<>();
             LocalTime horarioAtual = barbeiro.get().getInicioExpediente();
 
             while (horarioAtual.isBefore(barbeiro.get().getTerminoExpediente())) {
-                horariosDisponiveis.add(horarioAtual);
+                if (!horariosOcupados.contains(horarioAtual) && !dia.isBefore(LocalDate.now())) {
+                    if (dia.equals(LocalDate.now()) && horarioAtual.isAfter(LocalTime.now())) {
+                        horariosDisponiveis.add(horarioAtual);
+                    } else if (!dia.equals(LocalDate.now())) {
+                        horariosDisponiveis.add(horarioAtual);
+                    }
+                }
                 horarioAtual = horarioAtual.plusMinutes(30);
             }
-            horariosDisponiveis.removeIf(horariosOcupados::contains);
             return horariosDisponiveis;
         } else throw new ValidationException("Não existe barbeiro com ID : " + id + "!");
     }
 
-    public List<LocalTime> retornaHorariosOcupados(LocalDate dia, Long id){
+    public List<LocalTime> retornaHorariosOcupados(LocalDate dia, Long id) {
         List<Atendimento> atendimentosAgendados = agendaRepository.findById(id).get().getAtendimentos();
         List<LocalTime> horariosOcupados = new ArrayList<>();
 
-        for(Atendimento a : atendimentosAgendados){
-            if(a.getData().toLocalDate().equals(dia)){
-                int duracaoTotal = a.getDuracao().getHour()*60+a.getDuracao().getMinute();
+        for (Atendimento a : atendimentosAgendados) {
+            if (a.getData().toLocalDate().equals(dia)) {
+                int duracaoTotal = a.getDuracao().getHour() * 60 + a.getDuracao().getMinute();
                 LocalTime horarioInicio = a.getData().toLocalTime();
                 LocalTime horarioFim = horarioInicio.plusMinutes(duracaoTotal);
 
@@ -97,7 +102,6 @@ public class BarbeiroService {
                 }
             }
         }
-        System.out.println(horariosOcupados);
         return horariosOcupados;
     }
 }
