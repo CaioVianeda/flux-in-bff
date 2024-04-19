@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -92,4 +93,12 @@ public class AtendimentoService {
     }
 
 
+    public DadosAtendimentoDTO alterarConfirmacaoAtendimento(Long id) {
+        Optional<Atendimento> atendimento = atendimentoRepository.findById(id);
+        if(atendimento.isPresent()){
+            atendimento.get().setConfirmado(!atendimento.get().getConfirmado());
+            atendimentoRepository.save(atendimento.get());
+            return new DadosAtendimentoDTO(atendimento.get());
+        } else throw new ValidationException("Não existe atendimento com ID : " + id + "!");
+    }
 }

@@ -17,11 +17,13 @@ public record DadosAtendimentoDTO(Long id,
                                   List<DadosProcedimentoDTO> procedimentos,
                                   BigDecimal total,
                                   LocalDateTime data,
-                                  LocalTime duracao) {
+                                  LocalTime duracao,
+                                  Boolean finalizado,
+                                  Boolean confirmado) {
     public DadosAtendimentoDTO(Atendimento atendimento){
         this(atendimento.getId(), atendimento.getCliente().getId() ,atendimento.getCliente().getNome(),atendimento.getAgenda().getBarbeiro().getNome(),
                 atendimento.getProcedimentos().stream().map(DadosProcedimentoDTO::new).collect(Collectors.toList()),
                     atendimento.getRegistroValorProcedimentos().stream().reduce(BigDecimal.ZERO,BigDecimal::add),
-                    atendimento.getData(), atendimento.getDuracao());
+                    atendimento.getData(), atendimento.getDuracao(), atendimento.getFinalizado(), atendimento.getConfirmado());
     }
 }

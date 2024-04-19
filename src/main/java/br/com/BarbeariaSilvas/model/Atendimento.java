@@ -32,10 +32,13 @@ public class Atendimento {
     private Set<Procedimento> procedimentos;
     @Setter
     private List<BigDecimal> registroValorProcedimentos = new ArrayList<>();
+    @Setter
     private Boolean finalizado;
     @Setter
     private LocalDateTime data;
     private LocalTime duracao;
+    @Setter
+    private Boolean confirmado;
 
     public Atendimento(Cliente cliente, Agenda agenda, Set<Procedimento> procedimentos, LocalDateTime data) {
         this.cliente = cliente;
@@ -46,7 +49,6 @@ public class Atendimento {
         this.data = data;
         this.duracao = LocalTime.of(0,0);
         procedimentos.forEach(p -> this.duracao = this.duracao.plusMinutes(p.getTempoDuracao().getMinute()));
+        this.confirmado = false;
     }
-
-    public void mudarStatusFinalizado(){this.finalizado= !finalizado;}
 }
