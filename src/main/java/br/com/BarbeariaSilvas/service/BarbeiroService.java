@@ -1,6 +1,7 @@
 package br.com.BarbeariaSilvas.service;
 
 import br.com.BarbeariaSilvas.dto.CadastroBarbeiroDTO;
+import br.com.BarbeariaSilvas.dto.DadosAtendimentoDTO;
 import br.com.BarbeariaSilvas.dto.DadosBarbeiroDTO;
 import br.com.BarbeariaSilvas.model.Agenda;
 import br.com.BarbeariaSilvas.model.Atendimento;
@@ -86,6 +87,18 @@ public class BarbeiroService {
         } else throw new ValidationException("Não existe barbeiro com ID : " + id + "!");
     }
 
+    public List<DadosAtendimentoDTO> listarAtendimentosPorBarbeiro(Long id) {
+        List<DadosAtendimentoDTO> atendimentos = new ArrayList<>();
+
+        Agenda agenda = agendaRepository.getReferenceById(id);
+
+        agenda.getAtendimentos().forEach(atendimento -> {
+            atendimentos.add(new DadosAtendimentoDTO(atendimento));
+        });
+
+        return atendimentos;
+    }
+
     public List<LocalTime> retornaHorariosOcupados(LocalDate dia, Long id) {
         List<Atendimento> atendimentosAgendados = agendaRepository.findById(id).get().getAtendimentos();
         List<LocalTime> horariosOcupados = new ArrayList<>();
@@ -104,4 +117,6 @@ public class BarbeiroService {
         }
         return horariosOcupados;
     }
+
+
 }

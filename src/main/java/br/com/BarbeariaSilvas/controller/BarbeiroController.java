@@ -1,6 +1,7 @@
 package br.com.BarbeariaSilvas.controller;
 
 import br.com.BarbeariaSilvas.dto.CadastroBarbeiroDTO;
+import br.com.BarbeariaSilvas.dto.DadosAtendimentoDTO;
 import br.com.BarbeariaSilvas.dto.DadosBarbeiroDTO;
 import br.com.BarbeariaSilvas.service.BarbeiroService;
 import jakarta.validation.Valid;
@@ -39,6 +40,11 @@ public class BarbeiroController {
         return ResponseEntity.ok(barbeiros);
     }
 
+    @GetMapping("/{id}/atendimentos")
+    public ResponseEntity listarAtendimentosPorBarbeiro(@PathVariable("id") Long id) {
+        List<DadosAtendimentoDTO> atendimentos= service.listarAtendimentosPorBarbeiro(id);
+        return ResponseEntity.ok(atendimentos);
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity atualizarDadosBarbeiro(@PathVariable("id") Long id, @RequestBody CadastroBarbeiroDTO dto) {
