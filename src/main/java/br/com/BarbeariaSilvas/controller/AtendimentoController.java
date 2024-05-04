@@ -21,7 +21,7 @@ public class AtendimentoController {
     @PostMapping
     public ResponseEntity agendarAtendimento(@RequestBody @Valid CadastroAtendimentoDTO dto, UriComponentsBuilder uriBuilder) {
         var atendimento = service.agendarAtendimento(dto);
-        var uri = uriBuilder.path("atentimento/{id}").buildAndExpand(atendimento.id()).toUri();
+        var uri = uriBuilder.path("atendimento/{id}").buildAndExpand(atendimento.id()).toUri();
         return ResponseEntity.created(uri).body(atendimento);
     }
 
