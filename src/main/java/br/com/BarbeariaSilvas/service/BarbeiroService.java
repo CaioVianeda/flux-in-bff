@@ -5,8 +5,10 @@ import br.com.BarbeariaSilvas.dto.DadosAtendimentoDTO;
 import br.com.BarbeariaSilvas.dto.DadosBarbeiroDTO;
 import br.com.BarbeariaSilvas.model.Agenda;
 import br.com.BarbeariaSilvas.model.Atendimento;
+import br.com.BarbeariaSilvas.model.Barbearia;
 import br.com.BarbeariaSilvas.model.Barbeiro;
 import br.com.BarbeariaSilvas.repository.AgendaRepository;
+import br.com.BarbeariaSilvas.repository.BarbeariaRepository;
 import br.com.BarbeariaSilvas.repository.BarbeiroRespository;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,20 +21,25 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class BarbeiroService {
+
+    @Autowired
+    BarbeariaRepository barbeariaRepository;
     @Autowired
     BarbeiroRespository barbeiroRepository;
     @Autowired
     AgendaRepository agendaRepository;
 
     @Transactional
-    public DadosBarbeiroDTO cadastrarBarbeiro(CadastroBarbeiroDTO dto) {
+    public DadosBarbeiroDTO cadastrarBarbeiro(Long barbeariaID,CadastroBarbeiroDTO dto) {
         Agenda agenda = new Agenda();
         agendaRepository.save(agenda);
-        Barbeiro barbeiro = new Barbeiro(dto, agenda);
+        Optional<Barbearia> barbearia = barbeariaRepository.findById(barbeariaID);
+        Barbeiro barbeiro = new Barbeiro(barbearia.get(),dto, agenda);
         barbeiroRepository.save(barbeiro);
         return new DadosBarbeiroDTO(barbeiro);
 

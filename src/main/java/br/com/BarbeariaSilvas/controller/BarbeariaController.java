@@ -1,0 +1,31 @@
+package br.com.BarbeariaSilvas.controller;
+
+import br.com.BarbeariaSilvas.dto.CadastroBarbeariaDTO;
+import br.com.BarbeariaSilvas.service.BarbeariaService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+
+@RestController
+@RequestMapping("/barbearias")
+public class BarbeariaController {
+
+    @Autowired
+    BarbeariaService barbeariaService;
+
+    @PostMapping
+    public ResponseEntity cadastrarBarbearia(@RequestBody @Valid CadastroBarbeariaDTO barbeariaDTO, UriComponentsBuilder uriBuilder) {
+        var barbearia = barbeariaService.cadastrarBarbearia(barbeariaDTO);
+        var uri = uriBuilder.path("barbearia/{id}").buildAndExpand(barbearia.id()).toUri();
+        return ResponseEntity.created(uri).body(barbearia);
+    }
+
+    @GetMapping
+    public ResponseEntity listarBarbearias() {
+        var barbearias = barbeariaService.listarBarbearias();
+        return ResponseEntity.ok(barbearias);
+    }
+
+}

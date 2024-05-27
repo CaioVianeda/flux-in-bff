@@ -20,15 +20,18 @@ public class Barbeiro {
     private String telefone;
     @OneToOne
     private Agenda agenda;
+    @ManyToOne
+    private Barbearia barbearia;
     private String email;
     private LocalTime inicioExpediente;
     private LocalTime terminoExpediente;
 
 
-    public Barbeiro(CadastroBarbeiroDTO dto, Agenda agenda) {
+    public Barbeiro( Barbearia barbearia,CadastroBarbeiroDTO dto, Agenda agenda) {
         this.nome = dto.nome();
         this.telefone = dto.telefone();
         this.agenda = agenda;
+        this.barbearia = barbearia;
         this.email = dto.email();
         this.inicioExpediente = LocalTime.of(8, 0);
         this.terminoExpediente = LocalTime.of(18, 0);

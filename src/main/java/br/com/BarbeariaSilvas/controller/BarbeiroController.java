@@ -21,9 +21,9 @@ public class BarbeiroController {
     @Autowired
     BarbeiroService service;
 
-    @PostMapping
-    public ResponseEntity cadastrarBarbeiro(@RequestBody @Valid CadastroBarbeiroDTO dto, UriComponentsBuilder uriBuilder) {
-        var barbeiro = service.cadastrarBarbeiro(dto);
+    @PostMapping("/{id}")
+    public ResponseEntity cadastrarBarbeiro(@PathVariable("id") Long barbeariaID,@RequestBody @Valid CadastroBarbeiroDTO dto, UriComponentsBuilder uriBuilder) {
+        var barbeiro = service.cadastrarBarbeiro(barbeariaID,dto);
         var uri = uriBuilder.path("barbeiro/{id}").buildAndExpand(barbeiro.id()).toUri();
         return ResponseEntity.created(uri).body(barbeiro);
     }
