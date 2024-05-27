@@ -2,6 +2,7 @@ package br.com.BarbeariaSilvas.service;
 
 import br.com.BarbeariaSilvas.dto.CadastroBarbeariaDTO;
 import br.com.BarbeariaSilvas.dto.DadosBarbeariaDTO;
+import br.com.BarbeariaSilvas.dto.DadosBarbeiroDTO;
 import br.com.BarbeariaSilvas.model.Barbearia;
 import br.com.BarbeariaSilvas.repository.BarbeariaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,10 @@ public class BarbeariaService {
     }
 
     public List<DadosBarbeariaDTO> listarBarbearias() {
-
         return barbeariaRepository.findAll().stream().map(DadosBarbeariaDTO::new).toList();
+    }
+
+    public  List<DadosBarbeiroDTO> listarBarbeirosPorBarbearia(Long id) {
+        return barbeariaRepository.findById(id).get().getBarbeiros().stream().map(DadosBarbeiroDTO::new).toList();
     }
 }
