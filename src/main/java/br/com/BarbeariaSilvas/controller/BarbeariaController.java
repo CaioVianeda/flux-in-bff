@@ -1,6 +1,7 @@
 package br.com.BarbeariaSilvas.controller;
 
 import br.com.BarbeariaSilvas.dto.CadastroBarbeariaDTO;
+import br.com.BarbeariaSilvas.dto.DadosBarbeariaDTO;
 import br.com.BarbeariaSilvas.service.BarbeariaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,20 @@ public class BarbeariaController {
     public ResponseEntity listarBarbeirosPorBarbearia(@PathVariable("id") Long id){
         var barbearias = barbeariaService.listarBarbeirosPorBarbearia(id);
         return ResponseEntity.ok(barbearias);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity atualizarBarbearia(@PathVariable("id") Long id, @RequestBody CadastroBarbeariaDTO cadastroBarbeariaDTO){
+
+        var barbearia = barbeariaService.atualizarBarbearia(id,cadastroBarbeariaDTO);
+
+        return ResponseEntity.ok(barbearia);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deletarBarbearia(@PathVariable("id") Long id) {
+        barbeariaService.deletarBarbearia(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
