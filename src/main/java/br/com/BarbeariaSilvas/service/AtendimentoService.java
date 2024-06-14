@@ -101,4 +101,13 @@ public class AtendimentoService {
             return new DadosAtendimentoDTO(atendimento.get());
         } else throw new ValidationException("Não existe atendimento com ID : " + id + "!");
     }
+
+    public DadosAtendimentoDTO alterarFinalizacaoAtendimento(Long id) {
+        Optional<Atendimento> atendimento = atendimentoRepository.findById(id);
+        if(atendimento.isPresent()){
+            atendimento.get().setFinalizado(!atendimento.get().getFinalizado());
+            return new DadosAtendimentoDTO(atendimento.get());
+        }
+        else throw new ValidationException("Não existe atendimento com ID : " + id + "!");
+    }
 }

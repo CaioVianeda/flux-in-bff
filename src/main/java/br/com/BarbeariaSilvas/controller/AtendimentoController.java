@@ -54,4 +54,10 @@ public class AtendimentoController {
         var atendimento = service.alterarConfirmacaoAtendimento(id);
         return ResponseEntity.ok(atendimento);
     }
+
+    @PutMapping("{id}/finalizar")
+    public ResponseEntity finalizarAtendimento(@PathVariable("id") Long id){
+        var atendimento = service.alterarFinalizacaoAtendimento(id);
+        return ResponseEntity.ok(atendimento);
+    }
 }
