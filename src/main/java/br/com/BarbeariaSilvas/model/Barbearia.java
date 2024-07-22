@@ -33,4 +33,13 @@ public class Barbearia {
         this.email = barbeariaDTO.email();
         this.barbeiros = new ArrayList<>();
     }
+
+    public void atualizaBarbeiro(CadastroBarbeariaDTO novosDados){
+        if(novosDados.nome() != this.nome){
+            this.nome = novosDados.nome();
+        }
+        if(novosDados.email() != this.email){
+            this.email = novosDados.email();
+        }
+    }
 }

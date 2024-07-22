@@ -5,6 +5,7 @@ import br.com.BarbeariaSilvas.dto.DadosBarbeariaDTO;
 import br.com.BarbeariaSilvas.dto.DadosBarbeiroDTO;
 import br.com.BarbeariaSilvas.model.Barbearia;
 import br.com.BarbeariaSilvas.repository.BarbeariaRepository;
+import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,4 +32,26 @@ public class BarbeariaService {
     public  List<DadosBarbeiroDTO> listarBarbeirosPorBarbearia(Long id) {
         return barbeariaRepository.findById(id).get().getBarbeiros().stream().map(DadosBarbeiroDTO::new).toList();
     }
+
+    @Transactional
+    public DadosBarbeariaDTO atualizarBarbearia(Long id,CadastroBarbeariaDTO cadastroBarbeariaDTO) {
+        var barbearia =  barbeariaRepository.findById(id);
+        if (barbearia.isPresent()){
+            barbearia.get().atualizaBarbeiro(cadastroBarbeariaDTO);
+            return new DadosBarbeariaDTO(barbearia.get());
+        }
+        else {
+            throw new ValidationException("Não existe barbearia com ID: "+ id + " !");
+        }
+    }
+
+    @Transactional
+    public void deletarBarbearia(Long id){
+        if(barbeariaRepository.existsById(id)){
+            barbeariaRepository.deleteById(id);
+        } else {
+            throw new ValidationException("Não existe barbearia com ID: " + id + " !");
+        }
+    }
+
 }
