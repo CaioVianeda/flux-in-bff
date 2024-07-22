@@ -106,6 +106,7 @@ public class AtendimentoService {
         Optional<Atendimento> atendimento = atendimentoRepository.findById(id);
         if(atendimento.isPresent()){
             atendimento.get().setFinalizado(!atendimento.get().getFinalizado());
+            atendimentoRepository.save((atendimento.get()));
             return new DadosAtendimentoDTO(atendimento.get());
         }
         else throw new ValidationException("Não existe atendimento com ID : " + id + "!");
