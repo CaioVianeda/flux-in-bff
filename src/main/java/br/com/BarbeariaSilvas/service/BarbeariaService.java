@@ -29,6 +29,17 @@ public class BarbeariaService {
         return barbeariaRepository.findAll().stream().map(DadosBarbeariaDTO::new).toList();
     }
 
+    public DadosBarbeariaDTO listarBarbeariaPorId(Long id) {
+        var barbearia = barbeariaRepository.findById(id);
+
+        if(barbearia.isPresent()){
+            return new DadosBarbeariaDTO(barbearia.get());
+        }
+        else {
+            throw new ValidationException("Não existe barbearia com ID: " + id + " !");
+        }
+    }
+
     public  List<DadosBarbeiroDTO> listarBarbeirosPorBarbearia(Long id) {
         return barbeariaRepository.findById(id).get().getBarbeiros().stream().map(DadosBarbeiroDTO::new).toList();
     }
@@ -53,5 +64,4 @@ public class BarbeariaService {
             throw new ValidationException("Não existe barbearia com ID: " + id + " !");
         }
     }
-
 }

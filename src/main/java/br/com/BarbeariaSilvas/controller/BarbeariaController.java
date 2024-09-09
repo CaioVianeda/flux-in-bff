@@ -29,6 +29,12 @@ public class BarbeariaController {
         return ResponseEntity.ok(barbearias);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity listarBarbeariaPorId(@PathVariable("id") Long id) {
+        var barbearias = barbeariaService.listarBarbeariaPorId(id);
+        return ResponseEntity.ok(barbearias);
+    }
+
     @GetMapping("/{id}/barbeiros")
     public ResponseEntity listarBarbeirosPorBarbearia(@PathVariable("id") Long id){
         var barbearias = barbeariaService.listarBarbeirosPorBarbearia(id);
