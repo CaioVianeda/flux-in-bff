@@ -2,13 +2,16 @@ package br.com.BarbeariaSilvas.controller;
 
 import br.com.BarbeariaSilvas.dto.CadastroAtendimentoDTO;
 import br.com.BarbeariaSilvas.dto.DadosAtendimentoDTO;
+import br.com.BarbeariaSilvas.dto.FiltroAtendimentoDTO;
 import br.com.BarbeariaSilvas.service.AtendimentoService;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -19,7 +22,7 @@ public class AtendimentoController {
     AtendimentoService service;
 
     @PostMapping
-    public ResponseEntity agendarAtendimento(@RequestBody @Valid CadastroAtendimentoDTO dto, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<DadosAtendimentoDTO> agendarAtendimento(@RequestBody @Valid CadastroAtendimentoDTO dto, UriComponentsBuilder uriBuilder) {
         var atendimento = service.agendarAtendimento(dto);
         var uri = uriBuilder.path("atendimento/{id}").buildAndExpand(atendimento.id()).toUri();
         return ResponseEntity.created(uri).body(atendimento);
@@ -32,9 +35,15 @@ public class AtendimentoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity listarAtendimentoPorId(@PathVariable("id") Long id) {
+    public ResponseEntity<DadosAtendimentoDTO> listarAtendimentoPorId(@PathVariable("id") Long id) {
         DadosAtendimentoDTO atendimento = service.listarAtendimentoPorId(id);
         return ResponseEntity.ok(atendimento);
+    }
+
+    @PostMapping("/{id}/filtrar")
+    public ResponseEntity<List<DadosAtendimentoDTO>> filtrarAtendimentosPorData(@PathVariable("id") Long idFuncionario,@RequestBody FiltroAtendimentoDTO datas) {
+        List<DadosAtendimentoDTO> atendimentos = service.listarAtendimentosPorData(idFuncionario,datas.dataInicial(), datas.dataFinal());
+        return ResponseEntity.ok(atendimentos);
     }
 
     @PutMapping("/{id}")

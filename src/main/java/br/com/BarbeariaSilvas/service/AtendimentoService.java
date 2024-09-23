@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -110,5 +111,10 @@ public class AtendimentoService {
             return new DadosAtendimentoDTO(atendimento.get());
         }
         else throw new ValidationException("Não existe atendimento com ID : " + id + "!");
+    }
+
+    public List<DadosAtendimentoDTO> listarAtendimentosPorData(Long idAgendaFuncionario, LocalDateTime dataInicial, LocalDateTime dataFinal) {
+        var atendimentos = atendimentoRepository.findByDataHoraBetween(idAgendaFuncionario,dataInicial, dataFinal);
+        return atendimentos.stream().map(DadosAtendimentoDTO::new).collect(Collectors.toList());
     }
 }
