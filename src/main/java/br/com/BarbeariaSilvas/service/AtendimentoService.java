@@ -114,7 +114,10 @@ public class AtendimentoService {
     }
 
     public List<DadosAtendimentoDTO> listarAtendimentosPorData(Long idAgendaFuncionario, LocalDateTime dataInicial, LocalDateTime dataFinal) {
-        var atendimentos = atendimentoRepository.findByDataHoraBetween(idAgendaFuncionario,dataInicial, dataFinal);
-        return atendimentos.stream().map(DadosAtendimentoDTO::new).collect(Collectors.toList());
+        if(agendaRepository.existsById(idAgendaFuncionario)){
+            var atendimentos = atendimentoRepository.findByDataHoraBetween(idAgendaFuncionario,dataInicial, dataFinal);
+            return atendimentos.stream().map(DadosAtendimentoDTO::new).collect(Collectors.toList());
+        }
+       else throw new ValidationException("Não existe funcionário com id: (" + idAgendaFuncionario + ")");
     }
 }

@@ -9,36 +9,38 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
+
+import java.util.List;
 
 @RestControllerAdvice
 public class ErrorHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity handleError404() {
+    public ResponseEntity<String> handleError404() {
         return ResponseEntity.notFound().build();
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity handleError400(MethodArgumentNotValidException ex) {
+    public ResponseEntity<List<ValidationDto>> handleError400(MethodArgumentNotValidException ex) {
         var erros = ex.getFieldErrors();
         return ResponseEntity.badRequest().body(erros.stream().map(ValidationDto::new).toList());
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity handleError400(HttpMessageNotReadableException ex) {
-        return ResponseEntity.badRequest().body(ex.getMessage());
+    public ResponseEntity<String> handleError400(HttpMessageNotReadableException ex) {
+        return ResponseEntity.badRequest().body("Erro: " + ex.getMessage());
     }
 
     @ExceptionHandler(ValidationException.class)
-    public ResponseEntity handleValidationException(Exception ex) {
+    public ResponseEntity<String> handleValidationException(Exception ex) {
         return ResponseEntity.badRequest().body("Erro: " + ex.getLocalizedMessage());
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity handleError500(Exception ex) {
+    public ResponseEntity<String> handleError500(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro: " + ex.getLocalizedMessage());
     }
-
 
     private record ValidationDto(String field, String message) {
         public ValidationDto(FieldError error) {

@@ -2,14 +2,18 @@ package br.com.BarbeariaSilvas.dto;
 
 import br.com.BarbeariaSilvas.model.Barbeiro;
 
+import java.time.LocalTime;
+
 public record DadosBarbeiroDTO(
         Long id,
         Long idBarbearia,
         String nome,
         String telefone,
-        String email) {
+        String email,
+        LocalTime inicioExpediente,
+        LocalTime terminoExpediente) {
 
     public DadosBarbeiroDTO(Barbeiro barbeiro){
-        this(barbeiro.getId(),barbeiro.getBarbearia().getId(),barbeiro.getNome(),barbeiro.getTelefone(),barbeiro.getEmail());
+        this(barbeiro.getId(),barbeiro.getBarbearia().getId(),barbeiro.getNome(),barbeiro.getTelefone(),barbeiro.getEmail(), barbeiro.getInicioExpediente(),barbeiro.getTerminoExpediente());
     }
 }

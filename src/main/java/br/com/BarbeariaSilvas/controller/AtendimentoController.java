@@ -41,7 +41,7 @@ public class AtendimentoController {
     }
 
     @PostMapping("/{id}/filtrar")
-    public ResponseEntity<List<DadosAtendimentoDTO>> filtrarAtendimentosPorData(@PathVariable("id") Long idFuncionario,@RequestBody FiltroAtendimentoDTO datas) {
+    public ResponseEntity<List<DadosAtendimentoDTO>> filtrarAtendimentosPorData(@PathVariable("id") Long idFuncionario,@RequestBody @Valid FiltroAtendimentoDTO datas) {
         List<DadosAtendimentoDTO> atendimentos = service.listarAtendimentosPorData(idFuncionario,datas.dataInicial(), datas.dataFinal());
         return ResponseEntity.ok(atendimentos);
     }
