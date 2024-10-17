@@ -14,6 +14,6 @@ public record DadosFuncionarioDTO(
         LocalTime terminoExpediente) {
 
     public DadosFuncionarioDTO(Funcionario funcionario){
-        this(funcionario.getId(),funcionario.getBarbearia().getId(),funcionario.getNome(),funcionario.getTelefone(),funcionario.getEmail(), funcionario.getInicioExpediente(),funcionario.getTerminoExpediente());
+        this(funcionario.getId(),funcionario.getEstabelecimento().getId(),funcionario.getNome(),funcionario.getTelefone(),funcionario.getEmail(), funcionario.getInicioExpediente(),funcionario.getTerminoExpediente());
     }
 }

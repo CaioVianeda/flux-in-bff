@@ -3,7 +3,7 @@ package br.com.BarbeariaSilvas.controller;
 import br.com.BarbeariaSilvas.dto.CadastroFuncionarioDTO;
 import br.com.BarbeariaSilvas.dto.DadosAtendimentoDTO;
 import br.com.BarbeariaSilvas.dto.DadosFuncionarioDTO;
-import br.com.BarbeariaSilvas.service.BarbeiroService;
+import br.com.BarbeariaSilvas.service.FuncionarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,47 +19,47 @@ import java.util.List;
 @RequestMapping("/barbeiros")
 public class FuncionarioController {
     @Autowired
-    BarbeiroService service;
+    FuncionarioService service;
 
     @PostMapping("/{id}")
     public ResponseEntity cadastrarFuncionario(@PathVariable("id") Long barbeariaID, @RequestBody @Valid CadastroFuncionarioDTO dto, UriComponentsBuilder uriBuilder) {
-        var barbeiro = service.cadastrarBarbeiro(barbeariaID,dto);
+        var barbeiro = service.cadastrarFuncionario(barbeariaID,dto);
         var uri = uriBuilder.path("barbeiro/{id}").buildAndExpand(barbeiro.id()).toUri();
         return ResponseEntity.created(uri).body(barbeiro);
     }
 
     @GetMapping
     public ResponseEntity<List<DadosFuncionarioDTO>> listarFuncionarios() {
-        var barbeiros = service.listarBarbeiros();
+        var barbeiros = service.listarFuncionarios();
         return ResponseEntity.ok(barbeiros);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity listarFuncionarioPorId(@PathVariable("id") Long id) {
-        DadosFuncionarioDTO barbeiros = service.listarBarbeiroPorId(id);
+        DadosFuncionarioDTO barbeiros = service.listarFuncionarioPorId(id);
         return ResponseEntity.ok(barbeiros);
     }
 
     @GetMapping("/{id}/atendimentos")
     public ResponseEntity listarAtendimentosPorFuncionario(@PathVariable("id") Long id) {
-        List<DadosAtendimentoDTO> atendimentos= service.listarAtendimentosPorBarbeiro(id);
+        List<DadosAtendimentoDTO> atendimentos= service.listarAtendimentosPorFuncionario(id);
         return ResponseEntity.ok(atendimentos);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity atualizarDadosFuncionario(@PathVariable("id") Long id, @RequestBody CadastroFuncionarioDTO dto) {
-        DadosFuncionarioDTO barbeiro = service.atualizarDadosBarbeiro(id, dto);
+        DadosFuncionarioDTO barbeiro = service.atualizarDadosFuncionario(id, dto);
         return ResponseEntity.ok(barbeiro);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity apagarFuncionario(@PathVariable("id") Long id) {
-        service.apagarBarbeiro(id);
+        service.apagarFuncionario(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}/horarios")
     public ResponseEntity<List<String>> listarHorariosDisponiveisPorId(@PathVariable Long id,@RequestParam("dia") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dia){
-        return ResponseEntity.ok(service.horariosDisponiveisParaBarbeiro(id,dia).stream().map(h-> h.format(DateTimeFormatter.ofPattern("HH:mm"))).toList());
+        return ResponseEntity.ok(service.horariosDisponiveisParaFuncionario(id,dia).stream().map(h-> h.format(DateTimeFormatter.ofPattern("HH:mm"))).toList());
     }
 }

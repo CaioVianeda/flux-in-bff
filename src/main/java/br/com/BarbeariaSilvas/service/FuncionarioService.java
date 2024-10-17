@@ -5,10 +5,10 @@ import br.com.BarbeariaSilvas.dto.DadosAtendimentoDTO;
 import br.com.BarbeariaSilvas.dto.DadosFuncionarioDTO;
 import br.com.BarbeariaSilvas.model.Agenda;
 import br.com.BarbeariaSilvas.model.Atendimento;
-import br.com.BarbeariaSilvas.model.Barbearia;
+import br.com.BarbeariaSilvas.model.Estabelecimento;
 import br.com.BarbeariaSilvas.model.Funcionario;
 import br.com.BarbeariaSilvas.repository.AgendaRepository;
-import br.com.BarbeariaSilvas.repository.BarbeariaRepository;
+import br.com.BarbeariaSilvas.repository.EstabelecimentoRepository;
 import br.com.BarbeariaSilvas.repository.FuncionarioRepository;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,54 +23,54 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class BarbeiroService {
+public class FuncionarioService {
 
     @Autowired
-    BarbeariaRepository barbeariaRepository;
+    EstabelecimentoRepository estabelecimentoRepository;
     @Autowired
-    FuncionarioRepository barbeiroRepository;
+    FuncionarioRepository funcionarioRepository;
     @Autowired
     AgendaRepository agendaRepository;
 
     @Transactional
-    public DadosFuncionarioDTO cadastrarBarbeiro(Long barbeariaID, CadastroFuncionarioDTO dto) {
+    public DadosFuncionarioDTO cadastrarFuncionario(Long estabelecimentoID, CadastroFuncionarioDTO dto) {
         Agenda agenda = new Agenda();
         agendaRepository.save(agenda);
-        Optional<Barbearia> barbearia = barbeariaRepository.findById(barbeariaID);
-        Funcionario barbeiro = new Funcionario(barbearia.get(),dto, agenda);
-        barbeiroRepository.save(barbeiro);
-        return new DadosFuncionarioDTO(barbeiro);
+        Optional<Estabelecimento> estabelecimento = estabelecimentoRepository.findById(estabelecimentoID);
+        Funcionario funcionario = new Funcionario(estabelecimento.get(),dto, agenda);
+        funcionarioRepository.save(funcionario);
+        return new DadosFuncionarioDTO(funcionario);
 
     }
 
-    public List<DadosFuncionarioDTO> listarBarbeiros() {
-        var barbeiros = barbeiroRepository.findAll();
-        return barbeiros.stream().map(DadosFuncionarioDTO::new).collect(Collectors.toList());
+    public List<DadosFuncionarioDTO> listarFuncionarios() {
+        var funcionarios = funcionarioRepository.findAll();
+        return funcionarios.stream().map(DadosFuncionarioDTO::new).collect(Collectors.toList());
     }
 
-    public DadosFuncionarioDTO listarBarbeiroPorId(Long id) {
-        if (barbeiroRepository.existsById(id)) {
-            return new DadosFuncionarioDTO(barbeiroRepository.getReferenceById(id));
-        } else throw new ValidationException("Não existe barbeiro com ID : " + id + "!");
-    }
-
-    @Transactional
-    public void apagarBarbeiro(Long id) {
-        barbeiroRepository.deleteById(id);
+    public DadosFuncionarioDTO listarFuncionarioPorId(Long id) {
+        if (funcionarioRepository.existsById(id)) {
+            return new DadosFuncionarioDTO(funcionarioRepository.getReferenceById(id));
+        } else throw new ValidationException("Não existe funcionário com ID : " + id + "!");
     }
 
     @Transactional
-    public DadosFuncionarioDTO atualizarDadosBarbeiro(Long id, CadastroFuncionarioDTO dto) {
-        var barbeiro = barbeiroRepository.findById(id);
+    public void apagarFuncionario(Long id) {
+        funcionarioRepository.deleteById(id);
+    }
+
+    @Transactional
+    public DadosFuncionarioDTO atualizarDadosFuncionario(Long id, CadastroFuncionarioDTO dto) {
+        var barbeiro = funcionarioRepository.findById(id);
         if (barbeiro.isPresent()) {
             barbeiro.get().atualizarDados(dto);
-            barbeiroRepository.save(barbeiro.get());
+            funcionarioRepository.save(barbeiro.get());
             return new DadosFuncionarioDTO(barbeiro.get());
-        } else throw new ValidationException("Não existe barbeiro com ID : " + id + "!");
+        } else throw new ValidationException("Não existe funcionário com ID : " + id + "!");
     }
 
-    public List<LocalTime> horariosDisponiveisParaBarbeiro(Long id, LocalDate dia) {
-        var barbeiro = barbeiroRepository.findById(id);
+    public List<LocalTime> horariosDisponiveisParaFuncionario(Long id, LocalDate dia) {
+        var barbeiro = funcionarioRepository.findById(id);
         if (barbeiro.isPresent()) {
 
             List<LocalTime> horariosOcupados = retornaHorariosOcupados(dia, id);
@@ -89,10 +89,10 @@ public class BarbeiroService {
                 horarioAtual = horarioAtual.plusMinutes(30);
             }
             return horariosDisponiveis;
-        } else throw new ValidationException("Não existe barbeiro com ID : " + id + "!");
+        } else throw new ValidationException("Não existe funcionário com ID : " + id + "!");
     }
 
-    public List<DadosAtendimentoDTO> listarAtendimentosPorBarbeiro(Long id) {
+    public List<DadosAtendimentoDTO> listarAtendimentosPorFuncionario(Long id) {
         List<DadosAtendimentoDTO> atendimentos = new ArrayList<>();
 
         Agenda agenda = agendaRepository.getReferenceById(id);
