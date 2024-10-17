@@ -2,7 +2,7 @@ package br.com.BarbeariaSilvas.service;
 
 import br.com.BarbeariaSilvas.dto.CadastroBarbeariaDTO;
 import br.com.BarbeariaSilvas.dto.DadosBarbeariaDTO;
-import br.com.BarbeariaSilvas.dto.DadosBarbeiroDTO;
+import br.com.BarbeariaSilvas.dto.DadosFuncionarioDTO;
 import br.com.BarbeariaSilvas.model.Barbearia;
 import br.com.BarbeariaSilvas.repository.BarbeariaRepository;
 import jakarta.validation.ValidationException;
@@ -40,8 +40,8 @@ public class BarbeariaService {
         }
     }
 
-    public  List<DadosBarbeiroDTO> listarBarbeirosPorBarbearia(Long id) {
-        return barbeariaRepository.findById(id).get().getBarbeiros().stream().map(DadosBarbeiroDTO::new).toList();
+    public  List<DadosFuncionarioDTO> listarBarbeirosPorBarbearia(Long id) {
+        return barbeariaRepository.findById(id).get().getBarbeiros().stream().map(DadosFuncionarioDTO::new).toList();
     }
 
     @Transactional

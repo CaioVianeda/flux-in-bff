@@ -1,6 +1,6 @@
 package br.com.BarbeariaSilvas.model;
 
-import br.com.BarbeariaSilvas.dto.CadastroBarbeiroDTO;
+import br.com.BarbeariaSilvas.dto.CadastroFuncionarioDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,7 @@ import java.time.LocalTime;
 @Getter
 @Entity
 @Table(name = "barbeiros")
-public class Barbeiro {
+public class Funcionario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,17 +27,17 @@ public class Barbeiro {
     private LocalTime terminoExpediente;
 
 
-    public Barbeiro( Barbearia barbearia,CadastroBarbeiroDTO dto, Agenda agenda) {
+    public Funcionario(Barbearia estabelecimento, CadastroFuncionarioDTO dto, Agenda agenda) {
         this.nome = dto.nome();
         this.telefone = dto.telefone();
         this.agenda = agenda;
-        this.barbearia = barbearia;
+        this.barbearia = estabelecimento;
         this.email = dto.email();
         this.inicioExpediente = LocalTime.of(8, 0);
         this.terminoExpediente = LocalTime.of(18, 0);
     }
 
-    public void atualizarDados(CadastroBarbeiroDTO dto) {
+    public void atualizarDados(CadastroFuncionarioDTO dto) {
         this.nome = dto.nome();
         this.telefone = dto.telefone();
         this.email = dto.email();

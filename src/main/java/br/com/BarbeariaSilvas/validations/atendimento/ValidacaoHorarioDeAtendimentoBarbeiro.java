@@ -2,9 +2,8 @@ package br.com.BarbeariaSilvas.validations.atendimento;
 
 import br.com.BarbeariaSilvas.dto.CadastroAtendimentoDTO;
 import br.com.BarbeariaSilvas.model.Agenda;
-import br.com.BarbeariaSilvas.model.Barbeiro;
 import br.com.BarbeariaSilvas.repository.AgendaRepository;
-import br.com.BarbeariaSilvas.repository.BarbeiroRespository;
+import br.com.BarbeariaSilvas.repository.FuncionarioRepository;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class ValidacaoHorarioDeAtendimentoBarbeiro implements ValidacaoAtendimento{
 
     @Autowired
-    BarbeiroRespository barbeiroRespository;
+    FuncionarioRepository barbeiroRespository;
     @Autowired
     AgendaRepository agendaRepository;
 

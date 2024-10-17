@@ -20,9 +20,9 @@ public class Barbearia {
     private String nome;
     private String email;
     @OneToMany(mappedBy = "barbearia", fetch = FetchType.EAGER)
-    private List<Barbeiro> barbeiros;
+    private List<Funcionario> barbeiros;
 
-    public Barbearia(String nome, String email, ArrayList<Barbeiro> barbeiros) {
+    public Barbearia(String nome, String email, ArrayList<Funcionario> barbeiros) {
         this.nome = nome;
         this.email = email;
         this.barbeiros = new ArrayList<>();

@@ -16,7 +16,7 @@ public class Agenda {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToOne(mappedBy = "agenda")
-    private Barbeiro barbeiro;
+    private Funcionario barbeiro;
     @Embedded
     @OneToMany(mappedBy = "agenda")
     private List<Atendimento> atendimentos;
