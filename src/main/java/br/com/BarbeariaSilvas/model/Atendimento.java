@@ -43,6 +43,7 @@ public class Atendimento {
     public Atendimento(Cliente cliente,Funcionario funcionario, Set<Procedimento> procedimentos, LocalDateTime data) {
         this.cliente = cliente;
         this.procedimentos = procedimentos;
+        this.funcionario = funcionario;
         this.finalizado = data.isBefore(LocalDateTime.now());
         procedimentos.forEach(p -> registroValorProcedimentos.add(p.getPreco()));
         this.data = data;
