@@ -47,6 +47,9 @@ public class ProcedimentoService {
 
     @Transactional
     public void apagarProcedimento(Long id) {
-        repository.deleteById(id);
+        var procedimento = repository.findById(id);
+        if (procedimento.isPresent()) {
+            procedimento.get().toggleAtivo();
+        } else throw new ValidationException("Não existe procedimento com ID : " + id + "!");
     }
 }

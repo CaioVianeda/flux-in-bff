@@ -21,15 +21,21 @@ public class Procedimento {
     @ManyToOne
     private Atendimento atendimento;
     private LocalTime tempoDuracao;
+    private Boolean ativo;
 
     public Procedimento(CadastroProcedimentoDTO dto) {
         this.nome = dto.nome();
         this.preco = dto.preco();
         this.tempoDuracao = LocalTime.of(0,30);
+        this.ativo = true;
     }
 
     public void atualizarProcedimento(CadastroProcedimentoDTO dto) {
         this.nome = dto.nome();
         this.preco = dto.preco();
+    }
+
+    public void toggleAtivo(){
+        this.ativo = !ativo;
     }
 }

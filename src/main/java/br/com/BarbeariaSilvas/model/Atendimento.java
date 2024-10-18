@@ -49,6 +49,6 @@ public class Atendimento {
         this.data = data;
         this.duracao = LocalTime.of(0,0);
         procedimentos.forEach(p -> this.duracao = this.duracao.plusMinutes(p.getTempoDuracao().getMinute()));
-        this.confirmado = false;
+        this.confirmado = true;
     }
 }

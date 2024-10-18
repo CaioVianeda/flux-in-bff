@@ -10,8 +10,9 @@ public record DadosProcedimentoDTO(Long id,
                                    @NotBlank
                                    String nome,
                                    @NotNull
-                                   BigDecimal preco) {
+                                   BigDecimal preco,
+                                   Boolean ativo) {
     public DadosProcedimentoDTO(Procedimento p) {
-        this(p.getId(),p.getNome(), p.getPreco());
+        this(p.getId(),p.getNome(), p.getPreco(), p.getAtivo());
     }
 }
