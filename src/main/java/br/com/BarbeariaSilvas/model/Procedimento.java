@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalTime;
+import java.util.Set;
 
 @NoArgsConstructor
 @Getter
@@ -18,8 +19,8 @@ public class Procedimento {
     private Long id;
     private String nome;
     private BigDecimal preco;
-    @ManyToOne
-    private Atendimento atendimento;
+    @ManyToMany
+    private Set<Atendimento> atendimentos;
     private LocalTime tempoDuracao;
     private Boolean ativo;
 
