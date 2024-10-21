@@ -26,7 +26,7 @@ public class Atendimento {
     private Cliente cliente;
     @Setter
     @ManyToOne
-    private Agenda agenda;
+    Funcionario funcionario;
     @Setter
     @ManyToMany
     private Set<Procedimento> procedimentos;
@@ -40,9 +40,8 @@ public class Atendimento {
     @Setter
     private Boolean confirmado;
 
-    public Atendimento(Cliente cliente, Agenda agenda, Set<Procedimento> procedimentos, LocalDateTime data) {
+    public Atendimento(Cliente cliente,Funcionario funcionario, Set<Procedimento> procedimentos, LocalDateTime data) {
         this.cliente = cliente;
-        this.agenda = agenda;
         this.procedimentos = procedimentos;
         this.finalizado = data.isBefore(LocalDateTime.now());
         procedimentos.forEach(p -> registroValorProcedimentos.add(p.getPreco()));

@@ -3,11 +3,9 @@ package br.com.BarbeariaSilvas.service;
 import br.com.BarbeariaSilvas.dto.CadastroFuncionarioDTO;
 import br.com.BarbeariaSilvas.dto.DadosAtendimentoDTO;
 import br.com.BarbeariaSilvas.dto.DadosFuncionarioDTO;
-import br.com.BarbeariaSilvas.model.Agenda;
 import br.com.BarbeariaSilvas.model.Atendimento;
 import br.com.BarbeariaSilvas.model.Estabelecimento;
 import br.com.BarbeariaSilvas.model.Funcionario;
-import br.com.BarbeariaSilvas.repository.AgendaRepository;
 import br.com.BarbeariaSilvas.repository.EstabelecimentoRepository;
 import br.com.BarbeariaSilvas.repository.FuncionarioRepository;
 import jakarta.validation.ValidationException;
@@ -29,15 +27,11 @@ public class FuncionarioService {
     EstabelecimentoRepository estabelecimentoRepository;
     @Autowired
     FuncionarioRepository funcionarioRepository;
-    @Autowired
-    AgendaRepository agendaRepository;
 
     @Transactional
     public DadosFuncionarioDTO cadastrarFuncionario(Long estabelecimentoID, CadastroFuncionarioDTO dto) {
-        Agenda agenda = new Agenda();
-        agendaRepository.save(agenda);
         Optional<Estabelecimento> estabelecimento = estabelecimentoRepository.findById(estabelecimentoID);
-        Funcionario funcionario = new Funcionario(estabelecimento.get(),dto, agenda);
+        Funcionario funcionario = new Funcionario(estabelecimento.get(),dto);
         funcionarioRepository.save(funcionario);
         return new DadosFuncionarioDTO(funcionario);
 
@@ -95,9 +89,8 @@ public class FuncionarioService {
     public List<DadosAtendimentoDTO> listarAtendimentosPorFuncionario(Long id) {
         List<DadosAtendimentoDTO> atendimentos = new ArrayList<>();
 
-        Agenda agenda = agendaRepository.getReferenceById(id);
-
-        agenda.getAtendimentos().forEach(atendimento -> {
+        Funcionario funcionario = funcionarioRepository.getReferenceById(id);
+        funcionario.getAtendimentos().forEach(atendimento -> {
             atendimentos.add(new DadosAtendimentoDTO(atendimento));
         });
 
@@ -105,7 +98,7 @@ public class FuncionarioService {
     }
 
     public List<LocalTime> retornaHorariosOcupados(LocalDate dia, Long id) {
-        List<Atendimento> atendimentosAgendados = agendaRepository.findById(id).get().getAtendimentos();
+        List<Atendimento> atendimentosAgendados = funcionarioRepository.findById(id).get().getAtendimentos();
         List<LocalTime> horariosOcupados = new ArrayList<>();
 
         for (Atendimento a : atendimentosAgendados) {

@@ -21,7 +21,7 @@ public record DadosAtendimentoDTO(Long id,
                                   Boolean finalizado,
                                   Boolean confirmado) {
     public DadosAtendimentoDTO(Atendimento atendimento){
-        this(atendimento.getId(), atendimento.getCliente().getId() ,atendimento.getCliente().getNome(),atendimento.getAgenda().getBarbeiro().getNome(),
+        this(atendimento.getId(), atendimento.getCliente().getId() ,atendimento.getCliente().getNome(),atendimento.getFuncionario() .getNome(),
                 atendimento.getProcedimentos().stream().map(DadosProcedimentoDTO::new).collect(Collectors.toList()),
                     atendimento.getRegistroValorProcedimentos().stream().reduce(BigDecimal.ZERO,BigDecimal::add),
                     atendimento.getData(), atendimento.getDuracao(), atendimento.getFinalizado(), atendimento.getConfirmado());

@@ -4,9 +4,9 @@ import br.com.BarbeariaSilvas.dto.CadastroAtendimentoDTO;
 import br.com.BarbeariaSilvas.dto.DadosAtendimentoDTO;
 import br.com.BarbeariaSilvas.model.Atendimento;
 import br.com.BarbeariaSilvas.model.Procedimento;
-import br.com.BarbeariaSilvas.repository.AgendaRepository;
 import br.com.BarbeariaSilvas.repository.AtendimentoRepository;
 import br.com.BarbeariaSilvas.repository.ClienteRepository;
+import br.com.BarbeariaSilvas.repository.FuncionarioRepository;
 import br.com.BarbeariaSilvas.repository.ProcedimentoRepository;
 import br.com.BarbeariaSilvas.validations.atendimento.ValidacaoAtendimento;
 import jakarta.validation.ValidationException;
@@ -33,7 +33,8 @@ public class AtendimentoService {
     private ProcedimentoRepository procedimentoRepository;
 
     @Autowired
-    private AgendaRepository agendaRepository;
+    private FuncionarioRepository funcionarioRepository;
+
 
     @Autowired
     private List<ValidacaoAtendimento> validacoes;
@@ -42,10 +43,10 @@ public class AtendimentoService {
     public DadosAtendimentoDTO agendarAtendimento(CadastroAtendimentoDTO dto) {
         validacoes.forEach(v -> v.validar(dto));
         var cliente = clienteRepository.findById(dto.clienteId());
-        var agenda = agendaRepository.findById(dto.agendaId());
+        var funcionario = funcionarioRepository.findById(dto.agendaId());
         var procedimentos = procedimentoRepository.findByIdIn(dto.procedimentosId());
         var data = dto.data();
-        Atendimento atendimento = new Atendimento(cliente.get(), agenda.get(), procedimentos, data);
+        Atendimento atendimento = new Atendimento(cliente.get(), funcionario.get(), procedimentos, data);
         atendimentoRepository.save(atendimento);
         return new DadosAtendimentoDTO(atendimento);
     }
@@ -70,9 +71,9 @@ public class AtendimentoService {
                 var cliente = clienteRepository.findById(dto.clienteId());
                 atendimento.get().setCliente(cliente.get());
             }
-            if (!Objects.equals(dto.agendaId(), atendimento.get().getAgenda().getId())) {
-                var agenda = agendaRepository.findById(dto.agendaId());
-                atendimento.get().setAgenda(agenda.get());
+            if (!Objects.equals(dto.agendaId(), atendimento.get().getFuncionario().getId())) {
+                var funcionario = funcionarioRepository.findById(dto.agendaId());
+                atendimento.get().setFuncionario(funcionario.get());
             }
             if (!dto.procedimentosId()
                     .equals(atendimento.get().getProcedimentos().stream()
@@ -113,11 +114,11 @@ public class AtendimentoService {
         else throw new ValidationException("Não existe atendimento com ID : " + id + "!");
     }
 
-    public List<DadosAtendimentoDTO> listarAtendimentosPorData(Long idAgendaFuncionario, LocalDateTime dataInicial, LocalDateTime dataFinal) {
-        if(agendaRepository.existsById(idAgendaFuncionario)){
-            var atendimentos = atendimentoRepository.findByDataHoraBetween(idAgendaFuncionario,dataInicial, dataFinal);
+    public List<DadosAtendimentoDTO> listarAtendimentosPorData(Long idFuncionario, LocalDateTime dataInicial, LocalDateTime dataFinal) {
+        if(funcionarioRepository.existsById(idFuncionario)){
+            var atendimentos = atendimentoRepository.findByDataHoraBetween(idFuncionario,dataInicial, dataFinal);
             return atendimentos.stream().map(DadosAtendimentoDTO::new).collect(Collectors.toList());
         }
-       else throw new ValidationException("Não existe funcionário com id: (" + idAgendaFuncionario + ")");
+       else throw new ValidationException("Não existe funcionário com id: (" + idFuncionario + ")");
     }
 }

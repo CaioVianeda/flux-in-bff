@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -18,20 +20,20 @@ public class Funcionario {
     private Long id;
     private String nome;
     private String telefone;
-    @OneToOne
-    private Agenda agenda;
     @ManyToOne
     private Estabelecimento estabelecimento;
+    @OneToMany(mappedBy = "funcionario")
+    private List<Atendimento> atendimentos;
     private String email;
     private LocalTime inicioExpediente;
     private LocalTime terminoExpediente;
 
 
-    public Funcionario(Estabelecimento estabelecimento, CadastroFuncionarioDTO dto, Agenda agenda) {
+    public Funcionario(Estabelecimento estabelecimento, CadastroFuncionarioDTO dto) {
         this.nome = dto.nome();
         this.telefone = dto.telefone();
-        this.agenda = agenda;
         this.estabelecimento = estabelecimento;
+        this.atendimentos = new ArrayList<>();
         this.email = dto.email();
         this.inicioExpediente = LocalTime.of(8, 0);
         this.terminoExpediente = LocalTime.of(18, 0);

@@ -11,15 +11,14 @@ import java.util.List;
 public interface AtendimentoRepository extends JpaRepository<Atendimento, Long> {
 
     @Query("SELECT COUNT(a) FROM Atendimento a " +
-            "WHERE a.agenda.id = :agendaId " +
+            "WHERE a.funcionario.id = :funcionarioId " +
             "AND a.data BETWEEN :inicioPeriodo AND :fimPeriodo")
-    int contaAtendimentosPorAgendaEPeriodo(Long agendaId,
+    int contaAtendimentosPorAgendaEPeriodo(Long funcionarioId,
                                            LocalDateTime inicioPeriodo,
                                            LocalDateTime fimPeriodo);
 
-    @Query("SELECT a FROM Atendimento a WHERE a.data BETWEEN :startDate AND :endDate AND a.agenda.id = :idAgendaFuncionario")
-    List<Atendimento> findByDataHoraBetween(@Param("idAgendaFuncionario") Long id,
+    @Query("SELECT a FROM Atendimento a WHERE a.data BETWEEN :startDate AND :endDate AND a.funcionario.id = :idFuncionario")
+    List<Atendimento> findByDataHoraBetween(@Param("idFuncionario") Long id,
                                             @Param("startDate") LocalDateTime startDate,
                                             @Param("endDate") LocalDateTime endDate);
-
 }
