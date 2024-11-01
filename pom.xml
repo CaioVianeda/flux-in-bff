@@ -11,8 +11,8 @@
 	<groupId>br.com.FluxIn</groupId>
 	<artifactId>flux-in-bff</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>barbearia-silvas-backend</name>
-	<description>Demo project for Spring Boot</description>
+	<name>flux-in-bff</name>
+	<description>API REST para o sistema de agenda FluxIn</description>
 	<properties>
 		<java.version>21</java.version>
 	</properties>
